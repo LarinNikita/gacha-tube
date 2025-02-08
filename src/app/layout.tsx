@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { ClerkProvider } from '@clerk/nextjs';
 
 import './globals.css';
 
@@ -21,8 +22,10 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <body className={font.className}>{children}</body>
-        </html>
+        <ClerkProvider afterSignOutUrl="/">
+            <html lang="en" suppressHydrationWarning>
+                <body className={font.className}>{children}</body>
+            </html>
+        </ClerkProvider>
     );
 }
