@@ -4,6 +4,8 @@ import { ClerkProvider } from '@clerk/nextjs';
 
 import './globals.css';
 
+import { TRPCProvider } from '@/trpc/client';
+
 const font = Inter({
     subsets: ['latin'],
 });
@@ -24,7 +26,9 @@ export default function RootLayout({
     return (
         <ClerkProvider afterSignOutUrl="/">
             <html lang="en" suppressHydrationWarning>
-                <body className={font.className}>{children}</body>
+                <body className={font.className}>
+                    <TRPCProvider>{children}</TRPCProvider>
+                </body>
             </html>
         </ClerkProvider>
     );
