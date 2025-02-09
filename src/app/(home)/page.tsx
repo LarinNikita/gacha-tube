@@ -4,11 +4,9 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { PageClient } from './client';
 
-import { HydrateClient, trpc } from '@/trpc/server';
+import { HydrateClient } from '@/trpc/server';
 
 export default async function Home() {
-    void trpc.hello.prefetch({ text: 'Hello' });
-
     return (
         <HydrateClient>
             <Suspense fallback={<p>Loading...</p>}>
