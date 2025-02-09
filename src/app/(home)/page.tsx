@@ -1,10 +1,13 @@
-import { HydrateClient, trpc } from '@/trpc/server';
 import { Suspense } from 'react';
-import { PageClient } from './client';
+
 import { ErrorBoundary } from 'react-error-boundary';
 
+import { PageClient } from './client';
+
+import { HydrateClient, trpc } from '@/trpc/server';
+
 export default async function Home() {
-    void trpc.hello.prefetch({ text: 'lullen' });
+    void trpc.hello.prefetch({ text: 'Hello' });
 
     return (
         <HydrateClient>
