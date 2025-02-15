@@ -1,6 +1,6 @@
 'use client';
 
-import { UserCircleIcon } from 'lucide-react';
+import { ClapperboardIcon, UserCircleIcon } from 'lucide-react';
 import { SignedOut, SignedIn, SignInButton, UserButton } from '@clerk/nextjs';
 
 import { Button } from '@/components/ui/button';
@@ -9,8 +9,17 @@ export const AuthButton = () => {
     return (
         <>
             <SignedIn>
-                <UserButton />
-                {/* Add menu items for studio and user profile */}
+                <UserButton>
+                    <UserButton.MenuItems>
+                        {/* Add menu items for studio and user profile */}
+                        <UserButton.Link
+                            label="Studio"
+                            href="/studio"
+                            labelIcon={<ClapperboardIcon className="size-4" />}
+                        />
+                        <UserButton.Action label="manageAccount" />
+                    </UserButton.MenuItems>
+                </UserButton>
             </SignedIn>
             <SignedOut>
                 <SignInButton mode="modal">
