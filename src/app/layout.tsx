@@ -6,6 +6,8 @@ import './globals.css';
 
 import { TRPCProvider } from '@/trpc/client';
 
+import { Toaster } from '@/components/ui/sonner';
+
 const font = Inter({
     subsets: ['latin'],
 });
@@ -27,7 +29,10 @@ export default function RootLayout({
         <ClerkProvider afterSignOutUrl="/">
             <html lang="en" suppressHydrationWarning>
                 <body className={font.className}>
-                    <TRPCProvider>{children}</TRPCProvider>
+                    <TRPCProvider>
+                        <Toaster />
+                        {children}
+                    </TRPCProvider>
                 </body>
             </html>
         </ClerkProvider>
