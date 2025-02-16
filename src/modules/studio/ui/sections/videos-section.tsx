@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 
 import Link from 'next/link';
 import { format } from 'date-fns';
+import { Globe2Icon, LockIcon } from 'lucide-react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { DEFAULT_LIMIT } from '@/constants';
@@ -102,7 +103,19 @@ const VideosSectionSuspense = () => {
                                                 </div>
                                             </div>
                                         </TableCell>
-                                        <TableCell>visibility</TableCell>
+                                        <TableCell>
+                                            <div className="flex items-center">
+                                                {video.visibility ===
+                                                'private' ? (
+                                                    <LockIcon className="mr-2 size-4" />
+                                                ) : (
+                                                    <Globe2Icon className="mr-2 size-4" />
+                                                )}
+                                                {shakeCaseToTitle(
+                                                    video.visibility,
+                                                )}
+                                            </div>
+                                        </TableCell>
                                         <TableCell>
                                             <div className="flex items-center">
                                                 {shakeCaseToTitle(
