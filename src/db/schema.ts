@@ -1,5 +1,9 @@
-import { mux } from '@/lib/mux';
 import { relations } from 'drizzle-orm';
+import {
+    createInsertSchema,
+    createSelectSchema,
+    createUpdateSchema,
+} from 'drizzle-zod';
 import {
     integer,
     pgEnum,
@@ -74,6 +78,10 @@ export const videos = pgTable('videos', {
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
+
+export const videoInsertSchema = createInsertSchema(videos);
+export const videoUpdateSchema = createUpdateSchema(videos);
+export const videoSelectSchema = createSelectSchema(videos);
 
 export const videoRelations = relations(videos, ({ one }) => ({
     user: one(users, {
