@@ -3,9 +3,12 @@
 import { Suspense } from 'react';
 
 import Link from 'next/link';
+import { format } from 'date-fns';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { DEFAULT_LIMIT } from '@/constants';
+
+import { shakeCaseToTitle } from '@/lib/utils';
 
 import { VideoThumbnail } from '@/modules/videos/ui/components/video-thumbnail';
 
@@ -15,7 +18,6 @@ import { InfiniteScroll } from '@/components/infinite-scroll';
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -89,11 +91,31 @@ const VideosSectionSuspense = () => {
                                                         }
                                                     />
                                                 </div>
+                                                <div className="flex flex-col gap-y-1 overflow-hidden">
+                                                    <span className="line-clamp-1 text-sm">
+                                                        {video.title}
+                                                    </span>
+                                                    <span className="text-muted-foreground line-clamp-1 text-xs">
+                                                        {video.description ||
+                                                            'No description'}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </TableCell>
                                         <TableCell>visibility</TableCell>
-                                        <TableCell>status</TableCell>
-                                        <TableCell>date</TableCell>
+                                        <TableCell>
+                                            <div className="flex items-center">
+                                                {shakeCaseToTitle(
+                                                    video.muxStatus || 'error',
+                                                )}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="truncate text-sm">
+                                            {format(
+                                                new Date(video.createdAt),
+                                                'd MMM yyyy',
+                                            )}
+                                        </TableCell>
                                         <TableCell>views</TableCell>
                                         <TableCell>comments</TableCell>
                                         <TableCell>likes</TableCell>
