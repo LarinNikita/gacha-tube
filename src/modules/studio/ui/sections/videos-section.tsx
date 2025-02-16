@@ -9,7 +9,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { DEFAULT_LIMIT } from '@/constants';
 
-import { shakeCaseToTitle } from '@/lib/utils';
+import { snakeCaseToTitle } from '@/lib/utils';
 
 import { VideoThumbnail } from '@/modules/videos/ui/components/video-thumbnail';
 
@@ -133,7 +133,7 @@ const VideosSectionSuspense = () => {
                             .flatMap(page => page.items)
                             .map(video => (
                                 <Link
-                                    href={`studio/video/${video.id}`}
+                                    href={`studio/videos/${video.id}`}
                                     key={video.id}
                                     legacyBehavior
                                 >
@@ -173,14 +173,14 @@ const VideosSectionSuspense = () => {
                                                 ) : (
                                                     <Globe2Icon className="mr-2 size-4" />
                                                 )}
-                                                {shakeCaseToTitle(
+                                                {snakeCaseToTitle(
                                                     video.visibility,
                                                 )}
                                             </div>
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center">
-                                                {shakeCaseToTitle(
+                                                {snakeCaseToTitle(
                                                     video.muxStatus || 'error',
                                                 )}
                                             </div>
