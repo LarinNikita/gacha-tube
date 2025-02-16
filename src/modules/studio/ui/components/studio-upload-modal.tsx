@@ -3,6 +3,8 @@
 import { toast } from 'sonner';
 import { Loader2Icon, PlusIcon } from 'lucide-react';
 
+import { StudioUploader } from './studio-uploader';
+
 import { trpc } from '@/trpc/client';
 
 import { Button } from '@/components/ui/button';
@@ -24,10 +26,17 @@ export const StudioUploadModal = () => {
         <>
             <ResponsiveModal
                 title="Upload a video"
-                open={!!create.data}
+                open={!!create.data?.url}
                 onOpenChange={() => create.reset()}
             >
-                <p>Upload a video</p>
+                {create.data?.url ? (
+                    <StudioUploader
+                        endpoint={create.data.url}
+                        onSuccess={() => {}}
+                    />
+                ) : (
+                    <Loader2Icon className="animate-spin" />
+                )}
             </ResponsiveModal>
             <Button
                 variant="secondary"

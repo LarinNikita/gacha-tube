@@ -81,7 +81,7 @@ export const FilterCarousel = ({
                         </CarouselItem>
                     )}
                     {isLoading &&
-                        Array.from({ length: 14 }).map((_, index) => (
+                        Array.from({ length: 15 }).map((_, index) => (
                             <CarouselItem
                                 key={index}
                                 className="basis-auto pl-3"
