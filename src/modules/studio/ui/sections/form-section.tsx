@@ -15,12 +15,15 @@ import {
     CopyIcon,
     Globe2Icon,
     ImagePlusIcon,
+    Loader2Icon,
     LockIcon,
     MoreVerticalIcon,
     RotateCcwIcon,
     SparklesIcon,
     TrashIcon,
 } from 'lucide-react';
+
+import { ThumbnailUploadModal } from '../components/thumbnail-upload-modal';
 
 import { videoUpdateSchema } from '@/db/schema';
 
@@ -55,7 +58,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ThumbnailUploadModal } from '../components/thumbnail-upload-modal';
 
 interface FormSectionProps {
     videoId: string;
@@ -100,6 +102,28 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
             utils.studio.getMany.invalidate();
             toast.success('Video removed');
             router.push('/studio');
+        },
+        onError: () => {
+            toast.error('Something went wrong');
+        },
+    });
+
+    const generateTitle = trpc.videos.generateTitle.useMutation({
+        onSuccess: () => {
+            toast.success('Background job started', {
+                description: 'This may take some time',
+            });
+        },
+        onError: () => {
+            toast.error('Something went wrong');
+        },
+    });
+
+    const generateDescription = trpc.videos.generateDescription.useMutation({
+        onSuccess: () => {
+            toast.success('Background job started', {
+                description: 'This may take some time',
+            });
         },
         onError: () => {
             toast.error('Something went wrong');
@@ -200,8 +224,30 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>
-                                            Title
-                                            {/* TODO: Add AI generate button */}
+                                            <div className="flex items-center gap-x-2">
+                                                Title
+                                                <Button
+                                                    size="icon"
+                                                    variant="outline"
+                                                    type="button"
+                                                    className="size-6 rounded-full [&_svg]:size-3"
+                                                    onClick={() =>
+                                                        generateTitle.mutate({
+                                                            id: videoId,
+                                                        })
+                                                    }
+                                                    disabled={
+                                                        generateTitle.isPending ||
+                                                        !video.muxTrackId
+                                                    }
+                                                >
+                                                    {generateTitle.isPending ? (
+                                                        <Loader2Icon className="animate-spin" />
+                                                    ) : (
+                                                        <SparklesIcon />
+                                                    )}
+                                                </Button>
+                                            </div>
                                         </FormLabel>
                                         <FormControl>
                                             <Input
@@ -221,8 +267,32 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>
-                                            Description
-                                            {/* TODO: Add AI generate button */}
+                                            <div className="flex items-center gap-x-2">
+                                                Description
+                                                <Button
+                                                    size="icon"
+                                                    variant="outline"
+                                                    type="button"
+                                                    className="size-6 rounded-full [&_svg]:size-3"
+                                                    onClick={() =>
+                                                        generateDescription.mutate(
+                                                            {
+                                                                id: videoId,
+                                                            },
+                                                        )
+                                                    }
+                                                    disabled={
+                                                        generateDescription.isPending ||
+                                                        !video.muxTrackId
+                                                    }
+                                                >
+                                                    {generateDescription.isPending ? (
+                                                        <Loader2Icon className="animate-spin" />
+                                                    ) : (
+                                                        <SparklesIcon />
+                                                    )}
+                                                </Button>
+                                            </div>
                                         </FormLabel>
                                         <FormControl>
                                             <Textarea
