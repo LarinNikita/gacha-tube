@@ -5,7 +5,7 @@
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "cSpell.words": ["Gacha", "svix"],
+    "cSpell.words": ["deepseek", "Gacha", "svix"],
     "typescript.tsdk": "node_modules/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true
 }
