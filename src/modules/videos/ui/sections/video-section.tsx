@@ -5,9 +5,9 @@ import { Suspense } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { VideoPlayer } from '../components/video-player';
 import { VideoBanner } from '../components/video-banner';
-import { VideoTopRow } from '../components/video-top-row';
+import { VideoPlayer, VideoPlayerSkeleton } from '../components/video-player';
+import { VideoTopRow, VideoTopRowSkeleton } from '../components/video-top-row';
 
 import { cn } from '@/lib/utils';
 
@@ -19,11 +19,20 @@ interface VideoSectionProps {
 
 export const VideoSection = ({ videoId }: VideoSectionProps) => {
     return (
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<VideoSectionSkeleton />}>
             <ErrorBoundary fallback={<p>Something went wrong</p>}>
                 <VideoSectionSuspense videoId={videoId} />
             </ErrorBoundary>
         </Suspense>
+    );
+};
+
+const VideoSectionSkeleton = () => {
+    return (
+        <>
+            <VideoPlayerSkeleton />
+            <VideoTopRowSkeleton />
+        </>
     );
 };
 
