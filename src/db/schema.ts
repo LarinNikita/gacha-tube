@@ -23,8 +23,8 @@ export const users = pgTable(
         name: text('name').notNull(),
         // TODO: Add banner fields
         imageUrl: text('image_url').notNull(),
-        createdAt: timestamp('created_at').notNull().defaultNow(),
-        updatedAt: timestamp('updated_at').notNull().defaultNow(),
+        createdAt: timestamp('created_at').defaultNow().notNull(),
+        updatedAt: timestamp('updated_at').defaultNow().notNull(),
     },
     t => [uniqueIndex('clerk_id_idx').on(t.clerkId)],
 );
@@ -33,6 +33,49 @@ export const userRelations = relations(users, ({ many }) => ({
     videos: many(videos),
     videoViews: many(videoViews),
     videoReactions: many(videoReactions),
+    subscriptions: many(subscriptions, {
+        relationName: 'subscriptions_viewer_id_fkey',
+    }),
+    subscribers: many(subscriptions, {
+        relationName: 'subscriptions_creator_id_fkey',
+    }),
+}));
+
+export const subscriptions = pgTable(
+    'subscriptions',
+    {
+        viewerId: uuid('viewer_id')
+            .references(() => users.id, {
+                onDelete: 'cascade',
+            })
+            .notNull(),
+        creatorId: uuid('creator_id')
+            .references(() => users.id, {
+                onDelete: 'cascade',
+            })
+            .notNull(),
+        createdAt: timestamp('created_at').defaultNow().notNull(),
+        updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    },
+    t => [
+        primaryKey({
+            name: 'subscriptions_pk',
+            columns: [t.viewerId, t.creatorId],
+        }),
+    ],
+);
+
+export const subscriptionRelations = relations(subscriptions, ({ one }) => ({
+    viewerId: one(users, {
+        fields: [subscriptions.viewerId],
+        references: [users.id],
+        relationName: 'subscriptions_viewer_id_fkey',
+    }),
+    creatorId: one(users, {
+        fields: [subscriptions.creatorId],
+        references: [users.id],
+        relationName: 'subscriptions_creator_id_fkey',
+    }),
 }));
 
 export const categories = pgTable(
@@ -41,8 +84,8 @@ export const categories = pgTable(
         id: uuid('id').primaryKey().defaultRandom(),
         name: text('name').notNull(),
         description: text('description'),
-        createdAt: timestamp('created_at').notNull().defaultNow(),
-        updatedAt: timestamp('updated_at').notNull().defaultNow(),
+        createdAt: timestamp('created_at').defaultNow().notNull(),
+        updatedAt: timestamp('updated_at').defaultNow().notNull(),
     },
     t => [uniqueIndex('name_idx').on(t.name)],
 );
@@ -80,8 +123,8 @@ export const videos = pgTable('videos', {
     categoryId: uuid('category_id').references(() => categories.id, {
         onDelete: 'set null',
     }),
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 export const videoInsertSchema = createInsertSchema(videos);
@@ -114,8 +157,8 @@ export const videoViews = pgTable(
                 onDelete: 'cascade',
             })
             .notNull(),
-        createdAt: timestamp('created_at').notNull().defaultNow(),
-        updatedAt: timestamp('updated_at').notNull().defaultNow(),
+        createdAt: timestamp('created_at').defaultNow().notNull(),
+        updatedAt: timestamp('updated_at').defaultNow().notNull(),
     },
     t => [
         primaryKey({
@@ -156,8 +199,8 @@ export const videoReactions = pgTable(
             })
             .notNull(),
         type: reactionType('type').notNull(),
-        createdAt: timestamp('created_at').notNull().defaultNow(),
-        updatedAt: timestamp('updated_at').notNull().defaultNow(),
+        createdAt: timestamp('created_at').defaultNow().notNull(),
+        updatedAt: timestamp('updated_at').defaultNow().notNull(),
     },
     t => [
         primaryKey({

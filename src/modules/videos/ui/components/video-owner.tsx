@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { useAuth } from '@clerk/nextjs';
 
+import { useSubscription } from '@/hooks/use-subscription';
+
 import { UserInfo } from '@/modules/users/ui/components/user-info';
 import { SubscriptionButton } from '@/modules/subscriptions/ui/components/subscription-button';
 
@@ -15,7 +17,12 @@ interface VideoOwnerProps {
 }
 
 export const VideoOwner = ({ user, videoId }: VideoOwnerProps) => {
-    const { userId: clerkUserId } = useAuth();
+    const { userId: clerkUserId, isLoaded } = useAuth();
+    const { isPending, onClick } = useSubscription({
+        userId: user.id,
+        isSubscribed: user.viewerSubscribed,
+        fromVideoId: videoId,
+    });
 
     return (
         <div className="flex min-w-0 items-center justify-between gap-3 sm:items-start sm:justify-start">
@@ -29,8 +36,7 @@ export const VideoOwner = ({ user, videoId }: VideoOwnerProps) => {
                     <div className="flex min-w-0 flex-col gap-1">
                         <UserInfo name={user.name} size="lg" />
                         <span className="text-muted-foreground line-clamp-1 text-sm">
-                            {/* TODO: properly fill subscriber count */}
-                            {0} subscribers
+                            {user.subscriberCount} subscribers
                         </span>
                     </div>
                 </div>
@@ -41,9 +47,9 @@ export const VideoOwner = ({ user, videoId }: VideoOwnerProps) => {
                 </Button>
             ) : (
                 <SubscriptionButton
-                    onClick={() => {}}
-                    disabled={false}
-                    isSubscribed={false}
+                    onClick={onClick}
+                    disabled={isPending || !isLoaded}
+                    isSubscribed={user.viewerSubscribed}
                     className="flex-none"
                 />
             )}
