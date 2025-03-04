@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { UTApi } from 'uploadthing/server';
-import { and, eq, getTableColumns, inArray } from 'drizzle-orm';
+import { and, eq, getTableColumns, inArray, isNotNull } from 'drizzle-orm';
 
 import { db } from '@/db';
 import {
+    subscriptions,
     users,
     videoReactions,
     videos,
@@ -90,12 +91,31 @@ export const videosRouter = createTRPCRouter({
                     ),
             );
 
+            const viewerSubscriptions = db.$with('viewer_subscriptions').as(
+                db
+                    .select()
+                    .from(subscriptions)
+                    .where(
+                        inArray(subscriptions.viewerId, userId ? [userId] : []),
+                    ),
+            );
+
             const [existingVideo] = await db
-                .with(viewerReactions)
+                .with(viewerReactions, viewerSubscriptions)
                 .select({
                     ...getTableColumns(videos),
                     user: {
                         ...getTableColumns(users),
+                        subscriberCount: db.$count(
+                            subscriptions,
+                            eq(subscriptions.creatorId, users.id),
+                        ),
+                        //?  BUG: this is solutions:
+                        //?  1) sql<boolean>`${table.name} IS NOT NULL`
+                        //?  2) isNotNull(table.column).mapWith(Boolean)
+                        viewerSubscribed: isNotNull(
+                            viewerSubscriptions.viewerId,
+                        ).mapWith(Boolean),
                     },
                     viewCount: db.$count(
                         videoViews,
@@ -122,6 +142,10 @@ export const videosRouter = createTRPCRouter({
                 .leftJoin(
                     viewerReactions,
                     eq(viewerReactions.videoId, videos.id),
+                )
+                .leftJoin(
+                    viewerSubscriptions,
+                    eq(viewerSubscriptions.creatorId, users.id),
                 )
                 .where(eq(videos.id, input.id));
             // .groupBy(videos.id, users.id, viewerReactions.type); //? Test this
