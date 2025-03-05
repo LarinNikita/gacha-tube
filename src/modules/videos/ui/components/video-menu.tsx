@@ -30,7 +30,7 @@ export const VideoMenu = ({ videoId, variant, onRemove }: VideoMenuProps) => {
     };
 
     return (
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
                 <Button variant={variant} size="icon" className="rounded-full">
                     <MoreVerticalIcon className="" />
