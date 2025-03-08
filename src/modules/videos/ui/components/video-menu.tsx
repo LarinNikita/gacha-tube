@@ -6,6 +6,8 @@ import {
     Trash2Icon,
 } from 'lucide-react';
 
+import { APP_URL } from '../../constants';
+
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -27,8 +29,7 @@ export const VideoMenu = ({
     onRemove,
 }: VideoMenuProps) => {
     const onShare = () => {
-        // TODO: Change if deployed outside of vercel
-        const fullUrl = `${process.env.VERCEL_URL || 'http://localhost:3000'}/videos/${videoId}`;
+        const fullUrl = `${APP_URL}/videos/${videoId}`;
         navigator.clipboard.writeText(fullUrl);
         toast.success('Link copied to the clipboard');
     };
