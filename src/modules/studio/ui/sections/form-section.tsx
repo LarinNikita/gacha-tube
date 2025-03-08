@@ -30,7 +30,7 @@ import { videoUpdateSchema } from '@/db/schema';
 
 import { snakeCaseToTitle } from '@/lib/utils';
 
-import { THUMBNAIL_FALLBACK } from '@/modules/videos/constants';
+import { APP_URL, THUMBNAIL_FALLBACK } from '@/modules/videos/constants';
 import { VideoPlayer } from '@/modules/videos/ui/components/video-player';
 
 import { trpc } from '@/trpc/client';
@@ -218,8 +218,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
         await update.mutateAsync(data);
     };
 
-    // TODO: Modify for outside deployment
-    const fullUrl = `${process.env.VERCEL_URL || 'http://localhost:3000'}/videos/${videoId}`;
+    const fullUrl = `${APP_URL}/videos/${videoId}`;
     const [isCopied, setIsCopied] = useState(false);
 
     const onCopy = async () => {

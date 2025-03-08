@@ -1,2 +1,4 @@
 export const THUMBNAIL_FALLBACK = '/placeholder.jpg';
-export const APP_URL = process.env.VERCEL_URL; // TODO: change if deployed outside of vercel
+// !!! Crucial to modify in .env to production domain (including protocol)
+export const APP_URL =
+    process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
