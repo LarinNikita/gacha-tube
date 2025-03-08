@@ -51,7 +51,7 @@ export const SearchInput = () => {
                 />
                 {value && (
                     <Button
-                        disabled={!value.trim()}
+                        onClick={() => setValue('')}
                         type="button"
                         variant="ghost"
                         size="icon"
@@ -62,6 +62,7 @@ export const SearchInput = () => {
                 )}
             </div>
             <button
+                disabled={!value.trim()}
                 type="submit"
                 className="rounded-r-full border border-l-0 bg-gray-100 px-5 py-2.5 hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
             >
