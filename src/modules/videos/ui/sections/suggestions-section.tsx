@@ -1,7 +1,17 @@
 'use client';
 
-import { VideoRowCard } from '../components/video-row-card';
-import { VideoGridCard } from '../components/video-grid-card';
+import { Suspense } from 'react';
+
+import { ErrorBoundary } from 'react-error-boundary';
+
+import {
+    VideoRowCard,
+    VideoRowCardSkeleton,
+} from '../components/video-row-card';
+import {
+    VideoGridCard,
+    VideoGridCardSkeleton,
+} from '../components/video-grid-card';
 
 import { DEFAULT_LIMIT } from '@/constants';
 
@@ -15,6 +25,39 @@ interface SuggestionsSectionProps {
 }
 
 export const SuggestionsSection = ({
+    videoId,
+    isManual,
+}: SuggestionsSectionProps) => {
+    return (
+        <Suspense fallback={<SuggestionsSectionSkeleton />}>
+            <ErrorBoundary fallback={<p>Something went wrong</p>}>
+                <SuggestionsSectionSuspense
+                    videoId={videoId}
+                    isManual={isManual}
+                />
+            </ErrorBoundary>
+        </Suspense>
+    );
+};
+
+const SuggestionsSectionSkeleton = () => {
+    return (
+        <>
+            <div className="hidden space-y-3 md:block">
+                {Array.from({ length: 6 }).map((_, index) => (
+                    <VideoRowCardSkeleton key={index} size="compact" />
+                ))}
+            </div>
+            <div className="block space-y-10 md:hidden">
+                {Array.from({ length: 6 }).map((_, index) => (
+                    <VideoGridCardSkeleton key={index} />
+                ))}
+            </div>
+        </>
+    );
+};
+
+const SuggestionsSectionSuspense = ({
     videoId,
     isManual,
 }: SuggestionsSectionProps) => {
