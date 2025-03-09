@@ -1,14 +1,15 @@
+import { toast } from 'sonner';
+import { useClerk } from '@clerk/nextjs';
 import { ThumbsDownIcon, ThumbsUpIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+
+import { trpc } from '@/trpc/client';
 
 import { VideoGetOneOutput } from '../../types';
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { useClerk } from '@clerk/nextjs';
-import { trpc } from '@/trpc/client';
-import { toast } from 'sonner';
 
 interface VideoReactionsProps {
     videoId: string;
@@ -29,7 +30,7 @@ export const VideoReactions = ({
     const like = trpc.videoReactions.like.useMutation({
         onSuccess: () => {
             utils.videos.getOne.invalidate({ id: videoId });
-            // TODO: Invalidate "liked" playlist
+            utils.playlists.getLiked.invalidate();
         },
         onError: error => {
             toast.error("You're not signed in");
@@ -42,6 +43,7 @@ export const VideoReactions = ({
     const dislike = trpc.videoReactions.dislike.useMutation({
         onSuccess: () => {
             utils.videos.getOne.invalidate({ id: videoId });
+            utils.playlists.getLiked.invalidate();
         },
         onError: error => {
             toast.error("You're not signed in");
