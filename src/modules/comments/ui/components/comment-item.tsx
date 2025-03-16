@@ -158,6 +158,7 @@ export const CommentItem = ({
                                 className="h-8"
                                 onClick={() => setIsReplyOpen(true)}
                             >
+                                <MessageSquareIcon />
                                 Reply
                             </Button>
                         )}

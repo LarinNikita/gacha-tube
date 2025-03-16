@@ -385,7 +385,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                             <FormField
                                 name="thumbnailUrl"
                                 control={form.control}
-                                render={({ field }) => (
+                                render={() => (
                                     <FormItem>
                                         <FormLabel>Thumbnail</FormLabel>
                                         <FormControl>

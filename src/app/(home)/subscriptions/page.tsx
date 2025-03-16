@@ -4,6 +4,8 @@ import { SubscriptionsView } from '@/modules/subscriptions/ui/views/subscription
 
 import { HydrateClient, trpc } from '@/trpc/server';
 
+export const dynamic = 'force-dynamic';
+
 const Page = async () => {
     void trpc.subscriptions.getMany.prefetchInfinite({
         limit: DEFAULT_LIMIT,
