@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { AuthButton } from '@/modules/auth/ui/components/auth-button';
+
 import { SearchInput } from './search-input';
 
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { AuthButton } from '@/modules/auth/ui/components/auth-button';
 
 export const HomeNavbar = () => {
     return (
@@ -13,7 +14,7 @@ export const HomeNavbar = () => {
                 {/* Menu and Logo */}
                 <div className="flex flex-shrink-0 items-center">
                     <SidebarTrigger />
-                    <Link href="/">
+                    <Link prefetch href="/" className="hidden md:block">
                         <div className="flex items-center gap-1 p-4">
                             <Image
                                 src="/logo.svg"
