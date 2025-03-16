@@ -34,7 +34,7 @@ export const StudioSidebarHeader = () => {
                     asChild
                     className="flex items-center justify-center"
                 >
-                    <Link href="/user/current">
+                    <Link href="/users/current">
                         <UserAvatar
                             imageUrl={user.imageUrl}
                             name={user.fullName ?? 'User'}
