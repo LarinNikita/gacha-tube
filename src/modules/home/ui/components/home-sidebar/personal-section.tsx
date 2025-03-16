@@ -17,13 +17,13 @@ import {
 const item = [
     {
         title: 'History',
-        url: '/playlist/history',
+        url: '/playlists/history',
         icon: HistoryIcon,
         auth: true,
     },
     {
         title: 'Liked Videos',
-        url: '/playlist/liked',
+        url: '/playlists/liked',
         icon: ThumbsUpIcon,
         auth: true,
     },
@@ -58,6 +58,7 @@ export const PersonalSection = () => {
                                 }}
                             >
                                 <Link
+                                    prefetch
                                     href={item.url}
                                     className="flex items-center gap-4"
                                 >

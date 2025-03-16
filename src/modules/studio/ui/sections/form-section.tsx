@@ -385,7 +385,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                             <FormField
                                 name="thumbnailUrl"
                                 control={form.control}
-                                render={({ field }) => (
+                                render={() => (
                                     <FormItem>
                                         <FormLabel>Thumbnail</FormLabel>
                                         <FormControl>
@@ -506,6 +506,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                             </p>
                                             <div className="flex items-center gap-x-2">
                                                 <Link
+                                                    prefetch
                                                     href={`/videos/${video.id}`}
                                                 >
                                                     <p className="line-clamp-1 text-sm text-blue-500">
